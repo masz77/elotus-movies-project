@@ -1,7 +1,7 @@
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { useEffect, useState } from "react";
-import { Layout, Modal, Card, Spin, Pagination, Row, Col } from "antd";
+import { Layout, Modal, Card, Spin, Pagination, Row, Col, Menu } from "antd";
 
 const { Meta } = Card;
 const { Header, Content } = Layout;
@@ -43,7 +43,21 @@ export default function Home() {
   return (
     <>
       <Layout>
-        <Header>Header</Header>
+        <Header>
+          <Menu
+            theme="dark"
+            mode="horizontal"
+            defaultSelectedKeys={["1"]}
+            items={[
+              {
+                label: `Now Playing`,
+              },
+              {
+                label: "Top Rated",
+              },
+            ]}
+          />
+        </Header>
         <Content style={{ padding: "3%" }}>
           <Row
             justify={"start"}
@@ -77,8 +91,11 @@ export default function Home() {
                       }
                     >
                       <Meta
-                        style={{ textAlign: "center" }}
-                        title={movie.title}
+                        title={
+                          <span style={{ fontWeight: "700" }}>
+                            {movie.title}
+                          </span>
+                        }
                       />
                     </Card>
                   </Col>
