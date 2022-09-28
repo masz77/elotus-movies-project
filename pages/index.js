@@ -107,7 +107,6 @@ export default function Home() {
           {isLoading == false && `${movieData.title}`}
           {/* ${movieData.release_date.split("-")[0]} */}
         </h2>
-        {/* ${movieData.release_date.split("-")[0]} */}
         <h3>Overview</h3>
         <p>{movieData.overview}</p>
       </Modal>
