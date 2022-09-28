@@ -12,11 +12,3 @@
   text-align: center;
   justify-items: center
 };
-
-/* .grid-container {
-  display: grid;
-  grid-template-columns: 240px 300px;
-  grid-auto-rows: minmax(150px,auto);
-  gap: 20px;
-  background: #907c5e;
-} */
