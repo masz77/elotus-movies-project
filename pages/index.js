@@ -1,4 +1,3 @@
-import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { Modal } from "antd";
@@ -8,7 +7,7 @@ import { Card } from "antd";
 import { Row, Col } from "antd";
 
 const { Meta } = Card;
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Content } = Layout;
 
 export default function Home() {
   const sample_API_call = {
@@ -363,7 +362,21 @@ export default function Home() {
     total_results: 1749,
   };
 
-  console.log(sample_API_call.results[0].poster_path);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [moviesData, setMoviesData] = useState([]);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+  // console.log(sample_API_call.results[0].poster_path);
 
   return (
     <>
@@ -380,9 +393,12 @@ export default function Home() {
               return (
                 <Col key={movie.title} span={4}>
                   <Card
+                    onClick={() => {
+                      setMoviesData(movie);
+                      showModal();
+                    }}
                     className="card"
                     key={movie.title}
-                    // title={movie.title}
                     hoverable={true}
                     style={styles}
                     cover={
@@ -406,6 +422,19 @@ export default function Home() {
           </Row>
         </Content>
       </Layout>
+      <Modal
+        title="Movie Info"
+        footer={null}
+        open={isModalOpen}
+        // onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <h2>{`${moviesData.title} (${
+          moviesData.release_date.split("-")[0]
+        })`}</h2>
+        <h3>Overview</h3>
+        <p>{moviesData.overview}</p>
+      </Modal>
     </>
   );
 }
