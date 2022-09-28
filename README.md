@@ -36,13 +36,16 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-Loading while waiting for API
+Loading while waiting for API:
+
 ![Alt Text](https://media.giphy.com/media/C5ym6wqLYTlAbmVKiM/giphy.gif)
 
-Pagination and load Poster asynchronously
+Pagination and load Poster asynchronously:
+
 ![Alt Text](https://media.giphy.com/media/u9571GtIngdNhfu9kH/giphy.gif)
 
-Modal to show Movie's details
+Modal to show Movie's details:
+
 ![Alt Text](https://media.giphy.com/media/T9VOhiOUcei1AwaWZu/giphy.gif)
 
 ## License
