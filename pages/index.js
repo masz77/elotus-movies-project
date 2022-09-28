@@ -369,32 +369,40 @@ export default function Home() {
     <>
       <Layout>
         <Header>Header</Header>
-        <Content className="grid-container">
-          <Row justify={"center"} align={"middle"} gutter={[16, 24]}>
+        <Content style={{ padding: "3%" }}>
+          <Row
+            justify={"start"}
+            align={"middle"}
+            gutter={[16, { xs: 8, sm: 16, md: 24, lg: 32 }]}
+          >
+            {/* <div className="grid-container"> */}
             {sample_API_call.results.map((movie) => {
               return (
-                // <Col key={movie.title} span={4}>
-                <Card
-                  className="card"
-                  key={movie.title}
-                  // title={movie.title}
-                  hoverable={true}
-                  style={styles}
-                  cover={
-                    <Image
-                      width={240}
-                      height={300}
-                      // layout="fill"
-                      alt="thumbnail"
-                      src={`https://image.tmdb.org/t/p/w220_and_h330_face${movie.poster_path}`}
-                    />
-                  }
-                >
-                  <Meta style={{ textAlign: "center" }} title={movie.title} />
-                </Card>
-                // </Col>
+                <Col key={movie.title} span={4}>
+                  <Card
+                    className="card"
+                    key={movie.title}
+                    // title={movie.title}
+                    hoverable={true}
+                    style={styles}
+                    cover={
+                      <Image
+                        className="coverImage"
+                        width={240}
+                        height={300}
+                        // layout="fill"
+                        layout="responsive"
+                        alt="poster"
+                        src={`https://image.tmdb.org/t/p/w220_and_h330_face${movie.poster_path}`}
+                      />
+                    }
+                  >
+                    <Meta style={{ textAlign: "center" }} title={movie.title} />
+                  </Card>
+                </Col>
               );
             })}
+            {/* </div> */}
           </Row>
         </Content>
       </Layout>
