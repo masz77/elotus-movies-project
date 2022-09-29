@@ -6,7 +6,7 @@ import { Layout, Modal, Card, Spin, Pagination, Row, Col, Menu } from "antd";
 const { Meta } = Card;
 const { Header, Content } = Layout;
 
-export default function Home() {
+export default function TopRated() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [movieData, setMovieData] = useState([]);
   const [nowPlaying, setNowPlaying] = useState({});
@@ -16,7 +16,7 @@ export default function Home() {
   useEffect(() => {
     async function fetchData() {
       const API_KEY = "1d3a874ac3bfaee7edc952412c5f1522";
-      const getNowPlaying = `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${currentPage}`;
+      const getNowPlaying = `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=en-US&page=${currentPage}`;
       const response = await fetch(getNowPlaying, { method: "GET" });
       const data = await response.json();
       setNowPlaying(data);
