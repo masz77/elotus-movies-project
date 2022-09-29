@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Layout, Modal, Card, Spin, Pagination, Row, Col, Menu } from "antd";
 
 const { Meta } = Card;
-const { Header, Content } = Layout;
+const { Header, Content, Sider } = Layout;
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -71,7 +71,7 @@ export default function Home() {
                           // layout="fill"
                           layout="responsive"
                           alt="poster"
-                          src={`https://image.tmdb.org/t/p/w220_and_h330_face${movie.poster_path}`}
+                          src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movie.poster_path}`}
                         />
                       }
                     >
@@ -100,17 +100,34 @@ export default function Home() {
         </Content>
       </Layout>
       <Modal
-        title="Movie Info"
+        closable={false}
         footer={null}
         open={isModalOpen}
         onCancel={handleCancel}
+        bodyStyle={{ padding: "0px" }}
       >
-        <h2>
-          {isLoading == false && `${movieData.title}`}
-          {/* ${movieData.release_date.split("-")[0]} */}
-        </h2>
-        <h3>Overview</h3>
-        <p>{movieData.overview}</p>
+        <Layout style={{ flexWrap: "wrap", gap: "5%" }}>
+          <Sider>
+            <Image
+              width={600}
+              height={900}
+              // layout="fill"
+              layout="responsive"
+              quality={100}
+              // placeholder={blur}
+              alt="sider-poster"
+              src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movieData.poster_path}`}
+            />
+          </Sider>
+          <Content>
+            <h2>
+              {isLoading == false && `${movieData.title}`}
+              {/* ${movieData.release_date.split("-")[0]} */}
+            </h2>
+            <h3>Overview</h3>
+            <p>{movieData.overview}</p>
+          </Content>
+        </Layout>
       </Modal>
     </>
   );
