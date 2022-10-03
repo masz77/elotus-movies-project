@@ -53,7 +53,7 @@ export default function Home() {
             {isLoading == false &&
               nowPlaying.results.map((movie) => {
                 return (
-                  <Col key={movie.title} span={4}>
+                  <Col key={movie.title} xs={{ span: 6 }} lg={{ span: 4 }}>
                     <Card
                       onClick={() => {
                         setMovieData(movie);
