@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import { Layout, Modal, Card, Spin, Pagination, Row, Col, Menu } from "antd";
 
 const { Meta } = Card;
-const { Header, Content, Sider } = Layout;
+const { Header, Content } = Layout;
 
-export default function Home() {
+export default function TopRated() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [movieData, setMovieData] = useState([]);
   const [nowPlaying, setNowPlaying] = useState({});
@@ -16,7 +16,7 @@ export default function Home() {
   useEffect(() => {
     async function fetchData() {
       const API_KEY = "1d3a874ac3bfaee7edc952412c5f1522";
-      const getNowPlaying = `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${currentPage}`;
+      const getNowPlaying = `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=en-US&page=${currentPage}`;
       const response = await fetch(getNowPlaying, { method: "GET" });
       const data = await response.json();
       setNowPlaying(data);
@@ -71,7 +71,7 @@ export default function Home() {
                           // layout="fill"
                           layout="responsive"
                           alt="poster"
-                          src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movie.poster_path}`}
+                          src={`https://image.tmdb.org/t/p/w220_and_h330_face${movie.poster_path}`}
                         />
                       }
                     >
@@ -100,34 +100,17 @@ export default function Home() {
         </Content>
       </Layout>
       <Modal
-        closable={false}
+        title="Movie Info"
         footer={null}
         open={isModalOpen}
         onCancel={handleCancel}
-        bodyStyle={{ padding: "0px" }}
       >
-        <Layout style={{ flexWrap: "wrap", gap: "5%" }}>
-          <Sider>
-            <Image
-              width={600}
-              height={900}
-              // layout="fill"
-              layout="responsive"
-              quality={100}
-              // placeholder={blur}
-              alt="sider-poster"
-              src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movieData.poster_path}`}
-            />
-          </Sider>
-          <Content>
-            <h2>
-              {isLoading == false && `${movieData.title}`}
-              {/* ${movieData.release_date.split("-")[0]} */}
-            </h2>
-            <h3>Overview</h3>
-            <p>{movieData.overview}</p>
-          </Content>
-        </Layout>
+        <h2>
+          {isLoading == false && `${movieData.title}`}
+          {/* ${movieData.release_date.split("-")[0]} */}
+        </h2>
+        <h3>Overview</h3>
+        <p>{movieData.overview}</p>
       </Modal>
     </>
   );
