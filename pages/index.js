@@ -6,6 +6,38 @@ import { Layout, Modal, Card, Spin, Pagination, Row, Col, Menu } from "antd";
 const { Meta } = Card;
 const { Header, Content, Sider } = Layout;
 
+const MovieCard = ({ movie, setMovieData, showModal }) => {
+  return (
+    <Col xs={{ span: 12 }} sm={{ span: 8 }} md={{ span: 6 }} lg={{ span: 4 }}>
+      <Card
+        onClick={() => {
+          setMovieData(movie);
+          showModal();
+        }}
+        className="card"
+        key={movie.title}
+        hoverable={true}
+        style={{ styles }}
+        cover={
+          <Image
+            className="coverImage"
+            width={240}
+            height={300}
+            // layout="fill"
+            layout="responsive"
+            alt="poster"
+            src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movie.poster_path}`}
+          />
+        }
+      >
+        <Meta
+          title={<span style={{ fontWeight: "700" }}>{movie.title}</span>}
+        />
+      </Card>
+    </Col>
+  );
+};
+
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [movieData, setMovieData] = useState([]);
@@ -53,42 +85,12 @@ export default function Home() {
             {isLoading == false &&
               nowPlaying.results.map((movie) => {
                 return (
-                  <Col
+                  <MovieCard
                     key={movie.title}
-                    xs={{ span: 12 }}
-                    sm={{ span: 8 }}
-                    md={{ span: 6 }}
-                  >
-                    <Card
-                      onClick={() => {
-                        setMovieData(movie);
-                        showModal();
-                      }}
-                      className="card"
-                      key={movie.title}
-                      hoverable={true}
-                      style={styles}
-                      cover={
-                        <Image
-                          className="coverImage"
-                          width={240}
-                          height={300}
-                          // layout="fill"
-                          layout="responsive"
-                          alt="poster"
-                          src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movie.poster_path}`}
-                        />
-                      }
-                    >
-                      <Meta
-                        title={
-                          <span style={{ fontWeight: "700" }}>
-                            {movie.title}
-                          </span>
-                        }
-                      />
-                    </Card>
-                  </Col>
+                    movie={movie}
+                    setMovieData={setMovieData}
+                    showModal={showModal}
+                  />
                 );
               })}
           </Row>
@@ -106,33 +108,40 @@ export default function Home() {
       </Layout>
       <Modal
         closable={false}
+        width={"70vw"}
         footer={null}
         open={isModalOpen}
         onCancel={handleCancel}
-        bodyStyle={{ padding: "0px" }}
+        bodyStyle={{
+          height: "70vh",
+          padding: "0px",
+          flexDirection: "row",
+          maxHeight: "900px",
+          justifyContent: "flex-start",
+        }}
       >
-        <Layout style={{ flexWrap: "wrap", gap: "5%" }}>
-          <Sider>
-            <Image
-              width={600}
-              height={900}
-              // layout="fill"
-              layout="responsive"
-              quality={100}
-              // placeholder={blur}
-              alt="sider-poster"
-              src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movieData.poster_path}`}
-            />
-          </Sider>
-          <Content>
-            <h2>
-              {isLoading == false && `${movieData.title}`}
-              {/* ${movieData.release_date.split("-")[0]} */}
-            </h2>
-            <h3>Overview</h3>
-            <p>{movieData.overview}</p>
-          </Content>
-        </Layout>
+        {/* <Layout style={{ gap: "10px" }}> */}
+        {/* <Sider style={{ flexGrow: "1" }}> */}
+        <Image
+          width={600}
+          height={900}
+          // layout="fill"
+          layout="responsive"
+          quality={100}
+          // placeholder={blur}
+          alt="sider-poster"
+          src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movieData.poster_path}`}
+        />
+        {/* </Sider> */}
+        <Content style={{ flexGrow: "1" }}>
+          <h2>
+            {isLoading == false && `${movieData.title}`}
+            {/* ${movieData.release_date.split("-")[0]} */}
+          </h2>
+          <h3>Overview</h3>
+          <p>{movieData.overview}</p>
+        </Content>
+        {/* </Layout> */}
       </Modal>
     </>
   );
