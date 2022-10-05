@@ -1,7 +1,7 @@
-import Image from "next/image";
+// import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { useEffect, useState } from "react";
-import { Layout, Modal, Card, Spin, Pagination, Row, Col, Menu } from "antd";
+import { Layout, Modal, Card, Spin, Pagination, Row, Col, Image } from "antd";
 
 const { Meta } = Card;
 const { Header, Content, Sider } = Layout;
@@ -21,10 +21,11 @@ const MovieCard = ({ movie, setMovieData, showModal }) => {
         cover={
           <Image
             className="coverImage"
-            width={240}
-            height={300}
+            // width={240}
+            // height={300}
             // layout="fill"
-            layout="responsive"
+            // layout="responsive"
+            preview={false}
             alt="poster"
             src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movie.poster_path}`}
           />
@@ -120,28 +121,29 @@ export default function Home() {
           justifyContent: "flex-start",
         }}
       >
-        {/* <Layout style={{ gap: "10px" }}> */}
-        {/* <Sider style={{ flexGrow: "1" }}> */}
         <Image
-          width={600}
-          height={900}
+          // width={600}
+          // height={900}
+          //width={"100%"}
+          height={"100%"}
           // layout="fill"
-          layout="responsive"
-          quality={100}
+          // layout="responsive"
+          // quality={100}
           // placeholder={blur}
+          preview={false}
           alt="sider-poster"
           src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movieData.poster_path}`}
         />
-        {/* </Sider> */}
-        <Content style={{ flexGrow: "1" }}>
-          <h2>
-            {isLoading == false && `${movieData.title}`}
-            {/* ${movieData.release_date.split("-")[0]} */}
-          </h2>
-          <h3>Overview</h3>
-          <p>{movieData.overview}</p>
-        </Content>
-        {/* </Layout> */}
+
+        {/* <Content style={{ flexGrow: "1" }}>
+            {isLoading == false && <h2>{movieData.title}</h2>}
+
+            <h3>Overview</h3>
+            <p>{movieData.overview}</p>
+          </Content> */}
+        <Layout style={{ gap: "10px" }}>
+          <Sider style={{ flexGrow: "1" }}></Sider>
+        </Layout>
       </Modal>
     </>
   );
