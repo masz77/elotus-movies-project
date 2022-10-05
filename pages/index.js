@@ -107,6 +107,7 @@ export default function Home() {
           </Row>
         </Content>
       </Layout>
+
       <Modal
         closable={false}
         width={"70vw"}
@@ -114,13 +115,16 @@ export default function Home() {
         open={isModalOpen}
         onCancel={handleCancel}
         bodyStyle={{
+          display: "flex",
           height: "70vh",
           padding: "0px",
           flexDirection: "row",
-          maxHeight: "900px",
+          maxWidth: "900px",
           justifyContent: "flex-start",
         }}
       >
+        {/* <Layout style={{ gap: "10px", height: "100%" }}> */}
+        {/* <Sider style={{ height: "100%" }}> */}
         <Image
           // width={600}
           // height={900}
@@ -134,16 +138,15 @@ export default function Home() {
           alt="sider-poster"
           src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movieData.poster_path}`}
         />
-
-        {/* <Content style={{ flexGrow: "1" }}>
-            {isLoading == false && <h2>{movieData.title}</h2>}
-
-            <h3>Overview</h3>
-            <p>{movieData.overview}</p>
-          </Content> */}
-        <Layout style={{ gap: "10px" }}>
-          <Sider style={{ flexGrow: "1" }}></Sider>
-        </Layout>
+        {/* </Sider> */}
+        {/* <Content style={{ flexGrow: "1" }}> */}
+        <div>
+          {isLoading == false && <h2>{movieData.title}</h2>}
+          <h3>Overview</h3>
+          <p>{movieData.overview}</p>
+        </div>
+        {/* </Content> */}
+        {/* </Layout> */}
       </Modal>
     </>
   );
