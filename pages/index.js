@@ -2,6 +2,7 @@
 import styles from "../styles/Home.module.css";
 import { useEffect, useState } from "react";
 import { Layout, Modal, Card, Spin, Pagination, Row, Col, Image } from "antd";
+import useQuery from "swr";
 
 const { Meta } = Card;
 const { Header, Content, Sider } = Layout;
@@ -42,22 +43,38 @@ const MovieCard = ({ movie, setMovieData, showModal }) => {
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [movieData, setMovieData] = useState([]);
-  const [nowPlaying, setNowPlaying] = useState({});
+  // const [nowPlaying, setNowPlaying] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
 
+  // async function fetchData() {
+  //   const API_KEY = "1d3a874ac3bfaee7edc952412c5f1522";
+  //   const getNowPlaying = `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${currentPage}`;
+  //   const response = await fetch(getNowPlaying, { method: "GET" });
+  //   const data = await response.json();
+  //   setNowPlaying(data);
+  //   setIsLoading(false);
+  //   return data;
+  // }
+
+  const API_KEY = "1d3a874ac3bfaee7edc952412c5f1522";
+  const getNowPlaying = `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${currentPage}`;
+  const {
+    // isLoading,
+    error,
+    data: nowPlaying,
+  } = useQuery("getMovies", async () => {
+    setIsLoading(true);
+    const getMovies = await (
+      await fetch(getNowPlaying, { method: "GET" })
+    ).json();
+    setIsLoading(false);
+    return getMovies;
+  });
+
   useEffect(() => {
-    async function fetchData() {
-      const API_KEY = "1d3a874ac3bfaee7edc952412c5f1522";
-      const getNowPlaying = `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${currentPage}`;
-      const response = await fetch(getNowPlaying, { method: "GET" });
-      const data = await response.json();
-      setNowPlaying(data);
-      setIsLoading(false);
-      return data;
-    }
-    fetchData();
-    return () => {};
+    // FetchDataUseQuery();
+    // fetchData();
   }, [currentPage]);
 
   const onPageChange = (page, pageSize) => {
@@ -114,39 +131,26 @@ export default function Home() {
         footer={null}
         open={isModalOpen}
         onCancel={handleCancel}
+        style={{ maxWidth: "900px" }}
         bodyStyle={{
           display: "flex",
           height: "70vh",
           padding: "0px",
           flexDirection: "row",
-          maxWidth: "900px",
           justifyContent: "flex-start",
         }}
       >
-        {/* <Layout style={{ gap: "10px", height: "100%" }}> */}
-        {/* <Sider style={{ height: "100%" }}> */}
         <Image
-          // width={600}
-          // height={900}
-          //width={"100%"}
-          height={"100%"}
-          // layout="fill"
-          // layout="responsive"
-          // quality={100}
-          // placeholder={blur}
+          style={{ height: "100%", width: "auto", flex: "1 1 0" }}
           preview={false}
           alt="sider-poster"
           src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movieData.poster_path}`}
         />
-        {/* </Sider> */}
-        {/* <Content style={{ flexGrow: "1" }}> */}
-        <div>
+        <div style={{ flex: "1 1 0" }}>
           {isLoading == false && <h2>{movieData.title}</h2>}
           <h3>Overview</h3>
           <p>{movieData.overview}</p>
         </div>
-        {/* </Content> */}
-        {/* </Layout> */}
       </Modal>
     </>
   );
