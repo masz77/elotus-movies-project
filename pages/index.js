@@ -22,10 +22,6 @@ const MovieCard = ({ movie, setMovieData, showModal }) => {
         cover={
           <Image
             className="coverImage"
-            // width={240}
-            // height={300}
-            // layout="fill"
-            // layout="responsive"
             preview={false}
             alt="poster"
             src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movie.poster_path}`}
@@ -40,45 +36,49 @@ const MovieCard = ({ movie, setMovieData, showModal }) => {
   );
 };
 
+function useToGetMovies(_API_KEY, _currentPage) {
+  const fetcher = (...args) => fetch(...args).then((res) => res.json());
+  const { data, error } = useQuery(
+    `https://api.themoviedb.org/3/movie/now_playing?api_key=${_API_KEY}&language=en-US&page=${_currentPage}`,
+    fetcher
+  );
+
+  return {
+    movies: data,
+    isLoading: !error && !data,
+    isError: error,
+  };
+}
+
+function MyContent({ currentPage, setMovieData, showModal }) {
+  const API_KEY = "1d3a874ac3bfaee7edc952412c5f1522";
+  const { movies, isLoading, isError } = useToGetMovies(API_KEY, currentPage);
+
+  if (isLoading) return <Spin></Spin>;
+  if (isError) return <div>Error....</div>;
+  return (
+    <Row
+      justify={"start"}
+      align={"middle"}
+      gutter={[16, { xs: 8, sm: 16, md: 24, lg: 32 }]}
+    >
+      {movies.results.map((movie) => (
+        <MovieCard
+          key={movie.title}
+          movie={movie}
+          setMovieData={setMovieData}
+          showModal={showModal}
+        />
+      ))}
+    </Row>
+  );
+}
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [movieData, setMovieData] = useState([]);
-  // const [nowPlaying, setNowPlaying] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // async function fetchData() {
-  //   const API_KEY = "1d3a874ac3bfaee7edc952412c5f1522";
-  //   const getNowPlaying = `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${currentPage}`;
-  //   const response = await fetch(getNowPlaying, { method: "GET" });
-  //   const data = await response.json();
-  //   setNowPlaying(data);
-  //   setIsLoading(false);
-  //   return data;
-  // }
-
-  const API_KEY = "1d3a874ac3bfaee7edc952412c5f1522";
-  const getNowPlaying = `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${currentPage}`;
-  const {
-    // isLoading,
-    error,
-    data: nowPlaying,
-  } = useQuery("getMovies", async () => {
-    setIsLoading(true);
-    const getMovies = await (
-      await fetch(getNowPlaying, { method: "GET" })
-    ).json();
-    setIsLoading(false);
-    return getMovies;
-  });
-
-  useEffect(() => {
-    // FetchDataUseQuery();
-    // fetchData();
-  }, [currentPage]);
-
   const onPageChange = (page, pageSize) => {
-    // console.log(page, pageSize);
     setCurrentPage(page);
   };
 
@@ -94,24 +94,11 @@ export default function Home() {
     <>
       <Layout>
         <Content style={{ padding: "3%" }}>
-          <Row
-            justify={"start"}
-            align={"middle"}
-            gutter={[16, { xs: 8, sm: 16, md: 24, lg: 32 }]}
-          >
-            {isLoading == true && <Spin />}
-            {isLoading == false &&
-              nowPlaying.results.map((movie) => {
-                return (
-                  <MovieCard
-                    key={movie.title}
-                    movie={movie}
-                    setMovieData={setMovieData}
-                    showModal={showModal}
-                  />
-                );
-              })}
-          </Row>
+          <MyContent
+            currentPage={currentPage}
+            setMovieData={setMovieData}
+            showModal={showModal}
+          />
           <Row style={{ justifyContent: "right", padding: "20px" }}>
             <Pagination
               className="pagination"
@@ -147,7 +134,7 @@ export default function Home() {
           src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movieData.poster_path}`}
         />
         <div style={{ flex: "1 1 0" }}>
-          {isLoading == false && <h2>{movieData.title}</h2>}
+          {<h2>{movieData.title}</h2>}
           <h3>Overview</h3>
           <p>{movieData.overview}</p>
         </div>
