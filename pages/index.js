@@ -1,7 +1,7 @@
 import Image from "next/image";
-import styles from "../styles/Home.module.css";
 import { useEffect, useState } from "react";
 import { Layout, Modal, Card, Spin, Pagination, Row, Col, Menu } from "antd";
+import MovieDetailModal from "../components/MovieDetailModal";
 
 const { Meta } = Card;
 const { Header, Content, Sider } = Layout;
@@ -28,7 +28,7 @@ export default function Home() {
   }, [currentPage]);
 
   const onPageChange = (page, pageSize) => {
-    // console.log(page, pageSize);
+    // console.log(page, pageSize)
     setCurrentPage(page);
   };
 
@@ -46,62 +46,85 @@ export default function Home() {
 
   return (
     <>
-      <Layout>
-        <Content style={{ padding: "3%" }}>
-          <Row
-            justify={"start"}
-            align={"middle"}
-            gutter={[16, { xs: 8, sm: 16, md: 24, lg: 32 }]}
-          >
-            {isLoading == false &&
-              nowPlaying.results.map((movie) => {
-                return (
-                  <Col key={movie.title} xs={{ span: 6 }} lg={{ span: 4 }}>
-                    <Card
-                      onClick={() => {
-                        setMovieData(movie);
-                        showModal();
-                      }}
-                      className="card"
-                      key={movie.title}
-                      hoverable={true}
-                      style={styles}
-                      cover={
-                        <Image
-                          className="coverImage"
-                          width={240}
-                          height={300}
-                          // layout="fill"
-                          layout="responsive"
-                          alt="poster"
-                          src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movie.poster_path}`}
-                        />
-                      }
-                    >
-                      <Meta
-                        title={
-                          <span style={{ fontWeight: "700" }}>
-                            {movie.title}
-                          </span>
-                        }
-                      />
-                    </Card>
-                  </Col>
-                );
-              })}
-          </Row>
-          <Row style={{ justifyContent: "right", padding: "20px" }}>
-            <Pagination
-              className="pagination"
-              onChange={onPageChange}
-              responsive={true}
-              defaultPageSize={20}
-              defaultCurrent={1}
-              total={400}
-            />
-          </Row>
-        </Content>
-      </Layout>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          padding: "3%",
+          flexWrap: "wrap",
+          height: "90%",
+          width: "100%",
+          gap: "10px 20px",
+        }}
+      >
+        {/* <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "30% 30% 30%",
+            // gap: "50px 100px",
+          }}
+        ></div> */}
+        {isLoading == false &&
+          nowPlaying.results.map((movie) => {
+            return (
+              <Card
+                onClick={() => {
+                  setMovieData(movie);
+                  showModal();
+                }}
+                className="card"
+                key={movie.title}
+                hoverable={true}
+                // style={{ height: "auto", width: "30%" }}
+                style={{ flex: "1 0 21%" }}
+                cover={
+                  <Image
+                    className="coverImage"
+                    fills
+                    width={300}
+                    height={600}
+                    // layout="fill"
+                    // layout="responsive"
+                    alt="poster"
+                    src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movie.poster_path}`}
+                  />
+                }
+              >
+                <Meta
+                  title={
+                    <span style={{ fontWeight: "700" }}>{movie.title}</span>
+                  }
+                />
+              </Card>
+            );
+          })}
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          padding: "3%",
+          flexWrap: "wrap",
+          height: "10%",
+          width: "100%",
+          justifyContent: "right",
+        }}
+      >
+        <Pagination
+          className="pagination"
+          onChange={onPageChange}
+          responsive={true}
+          defaultPageSize={20}
+          defaultCurrent={1}
+          total={400}
+        />
+      </div>
+      <MovieDetailModal
+        handleCancel={handleCancel}
+        isModalOpen={isModalOpen}
+        movieData={movieData}
+      />
+      ;
     </>
   );
 }
