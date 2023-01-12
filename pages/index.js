@@ -40,6 +40,10 @@ export default function Home() {
     setIsModalOpen(false);
   };
 
+  if (isLoading) {
+    return <Spin />;
+  }
+
   return (
     <>
       <Layout>
@@ -49,7 +53,6 @@ export default function Home() {
             align={"middle"}
             gutter={[16, { xs: 8, sm: 16, md: 24, lg: 32 }]}
           >
-            {isLoading == true && <Spin />}
             {isLoading == false &&
               nowPlaying.results.map((movie) => {
                 return (
@@ -99,36 +102,6 @@ export default function Home() {
           </Row>
         </Content>
       </Layout>
-      <Modal
-        closable={false}
-        footer={null}
-        open={isModalOpen}
-        onCancel={handleCancel}
-        bodyStyle={{ padding: "0px" }}
-      >
-        <Layout style={{ flexWrap: "wrap", gap: "5%" }}>
-          <Sider>
-            <Image
-              width={600}
-              height={900}
-              // layout="fill"
-              layout="responsive"
-              quality={100}
-              // placeholder={blur}
-              alt="sider-poster"
-              src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movieData.poster_path}`}
-            />
-          </Sider>
-          <Content>
-            <h2>
-              {isLoading == false && `${movieData.title}`}
-              {/* ${movieData.release_date.split("-")[0]} */}
-            </h2>
-            <h3>Overview</h3>
-            <p>{movieData.overview}</p>
-          </Content>
-        </Layout>
-      </Modal>
     </>
   );
 }
