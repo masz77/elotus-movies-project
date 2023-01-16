@@ -57,47 +57,37 @@ export default function Home() {
           gap: "10px 20px",
         }}
       >
-        {/* <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "30% 30% 30%",
-            // gap: "50px 100px",
-          }}
-        ></div> */}
-        {isLoading == false &&
-          nowPlaying.results.map((movie) => {
-            return (
-              <Card
-                onClick={() => {
-                  setMovieData(movie);
-                  showModal();
-                }}
-                className="card"
-                key={movie.title}
-                hoverable={true}
-                // style={{ height: "auto", width: "30%" }}
-                style={{ flex: "1 0 21%" }}
-                cover={
-                  <Image
-                    className="coverImage"
-                    fills
-                    width={300}
-                    height={600}
-                    // layout="fill"
-                    // layout="responsive"
-                    alt="poster"
-                    src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movie.poster_path}`}
-                  />
-                }
-              >
-                <Meta
-                  title={
-                    <span style={{ fontWeight: "700" }}>{movie.title}</span>
-                  }
+        {nowPlaying.results.map((movie) => {
+          return (
+            <Card
+              onClick={() => {
+                setMovieData(movie);
+                showModal();
+              }}
+              className="card"
+              key={movie.title}
+              hoverable={true}
+              // style={{ height: "auto", width: "30%" }}
+              style={{ flex: "1 0 21%" }}
+              cover={
+                <Image
+                  className="coverImage"
+                  fills
+                  width={300}
+                  height={600}
+                  // layout="fill"
+                  // layout="responsive"
+                  alt="poster"
+                  src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movie.poster_path}`}
                 />
-              </Card>
-            );
-          })}
+              }
+            >
+              <Meta
+                title={<span style={{ fontWeight: "700" }}>{movie.title}</span>}
+              />
+            </Card>
+          );
+        })}
       </div>
       <div
         style={{
@@ -124,7 +114,6 @@ export default function Home() {
         isModalOpen={isModalOpen}
         movieData={movieData}
       />
-      ;
     </>
   );
 }
